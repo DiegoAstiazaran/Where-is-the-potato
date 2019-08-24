@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".InformationActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="285dp"
+        android:layout_height="43dp"
+        android:text="Instrucciones super chingonas y largas para que se vean en la pantalla"
+        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteY="132dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

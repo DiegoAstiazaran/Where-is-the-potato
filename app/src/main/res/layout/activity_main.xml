@@ -54,13 +54,17 @@
         app:srcCompat="@drawable/ic_potatoes" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="335dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="15dp"
         android:clickable="true"
         app:backgroundTint="@color/orange"
-        app:srcCompat="@android:drawable/ic_menu_info_details"
-        tools:layout_editor_absoluteX="335dp"
-        tools:layout_editor_absoluteY="660dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_info_details" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
