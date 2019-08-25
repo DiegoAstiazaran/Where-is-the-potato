@@ -79,6 +79,8 @@ public class JoinRoomActivity extends AppCompatActivity implements View.OnClickL
                                             String fbid = fbuser.getUid();
                                             DocumentReference gameToJoin = firestoreDB.collection("games").document(gameId);
                                             gameToJoin.update("players", FieldValue.arrayUnion(fbid));
+                                            DocumentReference user = firestoreDB.collection("users").document(fbid);
+                                            user.update("games", FieldValue.arrayUnion(gameId));
                                             Toast.makeText(getApplicationContext(), "Joined " + etRoomName.getText().toString() + " room!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
