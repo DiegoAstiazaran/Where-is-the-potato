@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -107,17 +109,25 @@ public class LocationService extends Service {
             @Override
             public void onLocationChanged(Location location)
             {
+                Log.e(TAG, "TE LA COMES");
 
-//                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
+
 
                 Log.e(TAG, "onLocationChanged: " + location);
                 mLastLocation.set(location);
+               // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+                //mDatabase.child("users").child(user.getUid()).setValue(location);
                 Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
+
+//
 //
 //                Map<String, String> data = new HashMap<>();
 //                data.put("location", location.toString());
 //                db.collection("users").document(currentUser.getUid()).set(data, SetOptions.merge());
+
+
             }
 
             @Override
