@@ -47,6 +47,9 @@ public class JoinRoomActivity extends AppCompatActivity implements View.OnClickL
         btnJoinRoom.setOnClickListener(this);
 
         firestoreDB = FirebaseFirestore.getInstance();
+
+        Intent intent = new Intent(this, LocationService.class);
+        startService(intent);
     }
 
     @Override

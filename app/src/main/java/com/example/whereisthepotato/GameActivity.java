@@ -21,6 +21,9 @@ public class GameActivity extends AppCompatActivity implements  View.OnClickList
 
         btJoinRoom = findViewById(R.id.join_game);
         btJoinRoom.setOnClickListener(this);
+
+        Intent intent = new Intent(this, LocationService.class);
+        startService(intent);
     }
 
     @Override
