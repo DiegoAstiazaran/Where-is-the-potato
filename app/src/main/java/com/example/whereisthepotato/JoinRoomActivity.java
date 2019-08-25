@@ -51,7 +51,7 @@ public class JoinRoomActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        EditText etRoomName = findViewById(R.id.room_name);
+        final EditText etRoomName = findViewById(R.id.room_name);
         switch (view.getId()) {
             case R.id.join_room:
                 if(TextUtils.isEmpty(etRoomName.getText())) {
@@ -76,6 +76,7 @@ public class JoinRoomActivity extends AppCompatActivity implements View.OnClickL
                                             String fbid = fbuser.getUid();
                                             DocumentReference gameToJoin = firestoreDB.collection("games").document(gameId);
                                             gameToJoin.update("players", FieldValue.arrayUnion(fbid));
+                                            Toast.makeText(getApplicationContext(), "Joined " + etRoomName.getText().toString() + " room!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
