@@ -4,21 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.fragment.app.Fragment;
 
-public class GameInstructionsFragment extends Fragment {
+public class OneGameFragment extends Fragment {
 
     private int tabPosition;
 
     private static final String TAB_POSITION = "tab_position";
 
-    public GameInstructionsFragment() {
+    public OneGameFragment() {
     }
 
-    public static GameInstructionsFragment newInstance(int position) {
-        GameInstructionsFragment fragment = new GameInstructionsFragment();
+    public static OneGameFragment newInstance(int position) {
+        OneGameFragment fragment = new OneGameFragment();
         Bundle args = new Bundle();
         args.putInt(TAB_POSITION, position);
         fragment.setArguments(args);
@@ -36,15 +35,10 @@ public class GameInstructionsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { //////////////////////////
-        int layout;
-        if (tabPosition == 9) {
-            layout = R.layout.free_for_all_instructions;
-        } else {
-            layout = R.layout.free_for_all_instructions;
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.game_detail, container, false);
 
-        View rootView = inflater.inflate(layout, container, false);
+        // TODO: load details into view; get them from firebase
 
         return rootView;
     }

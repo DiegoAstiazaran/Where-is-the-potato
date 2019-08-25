@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (user == null)
             return;
 
-        Intent I = new Intent(this, GameActivity.class);
+        Intent I = new Intent(this, OneGameActivity.class);
         startActivity(I);
     }
 

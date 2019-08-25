@@ -12,13 +12,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class MaterialPagerFragment extends Fragment {
+public class InformationPagerFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
 
-    public MaterialPagerFragment() {
+    public InformationPagerFragment() {
     }
 
     @Override
@@ -29,7 +29,7 @@ public class MaterialPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_material, container, false); /////////////////////
+        View view = inflater.inflate(R.layout.fragment_instructions_pager, container, false);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
@@ -56,13 +56,13 @@ public class MaterialPagerFragment extends Fragment {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a MaterialListFragment
-            return GameInstructionsFragment.newInstance(position);
+            return InformationFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
     }
 
