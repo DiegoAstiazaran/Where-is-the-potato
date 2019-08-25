@@ -2,4 +2,6 @@
     <string name="app_name">Where is the potato?</string>
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
+    <string name="welcome_message">Welcome %s!</string>
+    <string name="authentication_failure">Authentication_failure</string>
 </resources>
