@@ -17,6 +17,7 @@
         <activity android:name=".CreateRoomActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".GameActivity" android:screenOrientation="portrait"/>
         <activity android:name=".InformationActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".OneGameActivity" android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

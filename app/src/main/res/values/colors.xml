@@ -6,4 +6,9 @@
     <color name="orange">#FF4500</color>
     <color name="green">#00FF55</color>
 
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorDeleteBadge">#8abac1</color>
+    <color name="colorHyperlink">#0061af</color>
+
+
 </resources>
