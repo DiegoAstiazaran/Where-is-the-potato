@@ -36,7 +36,7 @@ public class GameInstructionsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { //////////////////////////
         int layout;
         if (tabPosition == 9) {
             layout = R.layout.free_for_all_instructions;

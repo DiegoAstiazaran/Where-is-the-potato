@@ -14,13 +14,9 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MaterialPagerFragment extends Fragment {
 
-    final static String MATERIAL_TYPE = "material_type";
-
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
-
-    private String materialType;
 
     public MaterialPagerFragment() {
     }
@@ -33,7 +29,7 @@ public class MaterialPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_material, container, false);
+        View view = inflater.inflate(R.layout.fragment_material, container, false); /////////////////////
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
@@ -45,7 +41,7 @@ public class MaterialPagerFragment extends Fragment {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
 
         return view;
     }
@@ -68,11 +64,6 @@ public class MaterialPagerFragment extends Fragment {
             // Show 3 total pages.
             return 3;
         }
-    }
-
-    private String getContentType (int position) {
-        return position == 0 ? "Video" : position == 1 ? "Document" : "Note";
-
     }
 
 }
