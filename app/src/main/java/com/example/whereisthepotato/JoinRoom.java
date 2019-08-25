@@ -18,7 +18,5 @@ public class JoinRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_room);
 
-        Intent intent = new Intent(this, LocationService.class);
-        startService(intent);
     }
 }

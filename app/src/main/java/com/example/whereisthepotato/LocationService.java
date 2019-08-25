@@ -11,20 +11,27 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class LocationService extends Service {
         private static final String TAG = "MyLocationService";
         private LocationManager mLocationManager = null;
-        private static final int LOCATION_INTERVAL = 3000;
-        private static final float LOCATION_DISTANCE = 10f;
+        private static final int LOCATION_INTERVAL = 1000;
+        private static final float LOCATION_DISTANCE = 5f;
 
         LocationListener[] mLocationListeners = new LocationListener[] {
                 new LocationListener(LocationManager.GPS_PROVIDER),
@@ -67,6 +74,7 @@ public class LocationService extends Service {
             } catch (IllegalArgumentException ex) {
                 Log.d(TAG, "gps provider does not exist " + ex.getMessage());
             }
+            FirebaseApp.initializeApp(this);
             Toast.makeText(getApplicationContext(), "SERVICE STARTED", Toast.LENGTH_LONG).show();
         }
 
@@ -93,7 +101,6 @@ public class LocationService extends Service {
         }
     }
 
-        // create LocationListener class to get location updates
         private class LocationListener implements android.location.LocationListener
         {
             Location mLastLocation;
@@ -105,19 +112,30 @@ public class LocationService extends Service {
             }
 
             @Override
-            public void onLocationChanged(Location location)
+            public void onLocationChanged(final Location location)
             {
 
-//                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                final FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
 
                 Log.e(TAG, "onLocationChanged: " + location);
                 mLastLocation.set(location);
 
-                Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
-//
-//                Map<String, String> data = new HashMap<>();
-//                data.put("location", location.toString());
-//                db.collection("users").document(currentUser.getUid()).set(data, SetOptions.merge());
+                final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                final FirebaseUser fbuser = firebaseAuth.getCurrentUser();
+                final String fbid = fbuser.getUid();
+
+                firestoreDB.collection("users")
+                        .whereEqualTo("firebase_uid", fbid)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentReference userUpdate = firestoreDB.collection("users").document(fbid);
+                                    userUpdate.update("location", new GeoPoint(location.getLatitude(), location.getLongitude()));
+                                }
+                            }
+                        });
             }
 
             @Override

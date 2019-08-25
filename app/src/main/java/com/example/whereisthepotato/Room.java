@@ -38,4 +38,8 @@ public class Room {
         this.owner = owner;
         this.password = password;
     }
+
+    public String getName() {
+        return name;
+    }
 }
