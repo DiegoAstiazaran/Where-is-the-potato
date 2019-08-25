@@ -17,4 +17,9 @@ public class User {
         this.password = password;
         this.rooms = rooms;
     }
+
+    public User(String email, String name) {
+        this.email = email;
+        this.name = name;
+    }
 }
