@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setButtons() {
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.information).setOnClickListener(this);
+        findViewById(R.id.log_in).setOnClickListener(this);
     }
 
     public void signIn() {
@@ -118,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.information:
                 Intent intent2 = new Intent(this, InformationActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.log_in:
+                Intent intent = new Intent(this, CreateRoomActivity.class);
+                startActivity(intent);
                 break;
         }
     }
