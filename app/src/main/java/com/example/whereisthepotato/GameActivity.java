@@ -32,7 +32,7 @@ public class GameActivity extends AppCompatActivity implements  View.OnClickList
                 view.getContext().startActivity(intent);
                 break;
             case R.id.join_game:
-                intent = new Intent(view.getContext(), JoinRoom.class);
+                intent = new Intent(view.getContext(), JoinRoomActivity.class);
                 view.getContext().startActivity(intent);
                 break;
             default:
