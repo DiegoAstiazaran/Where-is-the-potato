@@ -22,7 +22,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private GoogleSignInOptions gso;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseUser currentUser;
     private SignInButton signInButton;
     private FirebaseFirestore firestoreDB;
-//    private User user;
+    private User user;
 
     private int RC_SIGN_IN = 0;
 
@@ -90,7 +92,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void insertUserToFirestore(){
-        Toast.makeText(getApplicationContext(), "HEY", Toast.LENGTH_SHORT).show();
+        firestoreDB.collection("users").document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(!document.exists()) {
+                        user = new User(currentUser.getDisplayName(), currentUser.getEmail());
+                        firestoreDB.collection("users").document(currentUser.getUid()).set(user);
+                        updateUI(currentUser);
+                        Log.i("Insert user:", "User inserted");
+                    } else {
+                        Log.i("Insert user:", "User already exists");
+                        updateUI(currentUser);
+                    }
+                } else {
+                    Log.d("Get User:", "Task unsuccessful");
+                }
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
