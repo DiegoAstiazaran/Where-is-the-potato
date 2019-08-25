@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "322301488187",
+    "firebase_url": "https://whereisthepotato.firebaseio.com",
+    "project_id": "whereisthepotato",
+    "storage_bucket": "whereisthepotato.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322301488187:android:ef31dad626d4a27f",
+        "android_client_info": {
+          "package_name": "com.example.whereisthepotato"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322301488187-phvlp5jtm921fo4nl5eajt6j7ns63302.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.whereisthepotato",
+            "certificate_hash": "e452a773faff213ebc8c3bc4d327e427fa5dc04a"
+          }
+        },
+        {
+          "client_id": "322301488187-n0cvjh0dk9trq2bokm4npdbkckum960s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBqVaWOqvPmTkfYYVSpC_N5ZDElx5O0G8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322301488187-n0cvjh0dk9trq2bokm4npdbkckum960s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
