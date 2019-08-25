@@ -1,5 +1,6 @@
 package com.example.whereisthepotato;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,12 +15,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.type.Date;
 
 import org.w3c.dom.Text;
@@ -27,6 +34,8 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 
 public class CreateRoomActivity extends AppCompatActivity implements View.OnClickListener {
+
+    final FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +85,32 @@ public class CreateRoomActivity extends AppCompatActivity implements View.OnClic
                             Calendar.getInstance().getTime(), null, 10.0, true,
                             100.0, null, user, etPassword.getText().toString());
                     games.add(room);
+
+                    firestoreDB.collection("games")
+                            .whereEqualTo("name", room.getName())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        String gameId = "";
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            gameId = document.getId();
+                                        }
+                                        if (gameId.isEmpty()) {
+                                            Toast.makeText(getApplicationContext(), "Room not found", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                                            FirebaseUser fbuser = firebaseAuth.getCurrentUser();
+                                            String fbid = fbuser.getUid();
+                                            DocumentReference gameToJoin = firestoreDB.collection("games").document(gameId);
+                                            gameToJoin.update("players", FieldValue.arrayUnion(fbid));
+                                        }
+                                    }
+                                }
+                            });
+
+
                     Intent intent = new Intent(view.getContext(), GameActivity.class);
                     view.getContext().startActivity(intent);
                 }
