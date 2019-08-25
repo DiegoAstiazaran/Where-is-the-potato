@@ -25,19 +25,18 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
-
+    private GoogleSignInOptions gso;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
-
     private SignInButton signInButton;
     private FirebaseFirestore firestoreDB;
+//    private User user;
+
+    private int RC_SIGN_IN = 0;
 
     public void configureGoogleSignIn() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -45,43 +44,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setButtons() {
-        // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.information).setOnClickListener(this);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        configureGoogleSignIn();
-        setButtons();
-//        firestoreDB = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
+    public void signIn() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
+    private void updateUI(FirebaseUser user) {
+        if (user == null)
+            return;
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //Result from sign in intent
-        if(requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_failure), Toast.LENGTH_LONG).show();
-            }
-        }
+        Intent I = new Intent(this, GameActivity.class);
+        startActivity(I);
     }
 
     public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -105,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         } else {
                             Log.d("Firebase Auth", "signInWithCredential:failure");
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_failure), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_failure_firebase), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -115,14 +92,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(getApplicationContext(), "HEY", Toast.LENGTH_SHORT).show();
     }
 
-    private void signIn() {
-        Intent signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Result from sign in intent
+        if(requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w("Google SignIn", "Google sign in failed", e);
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_failure_google), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch(view.getId()) {
             case R.id.sign_in_button:
                 signIn();
                 break;
@@ -133,12 +122,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user == null)
-            return;
-
-        Intent I = new Intent(this, GameActivity.class);
-        startActivity(I);
+    @Override
+    public void onStart() {
+        super.onStart();
+        currentUser = firebaseAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        configureGoogleSignIn();
+        setButtons();
+        firestoreDB = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+    }
 }
