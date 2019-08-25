@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class GameActivity extends AppCompatActivity implements  View.OnClickListener {
 
-    public Button btCreateRoom;
+    public Button btCreateRoom, btJoinRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,15 +17,22 @@ public class GameActivity extends AppCompatActivity implements  View.OnClickList
         setContentView(R.layout.activity_game);
 
         btCreateRoom = findViewById(R.id.create_game);
-
         btCreateRoom.setOnClickListener(this);
+
+        btJoinRoom = findViewById(R.id.join_game);
+        btJoinRoom.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.create_game:
-                Intent intent = new Intent(view.getContext(), CreateRoomActivity.class);
+                intent = new Intent(view.getContext(), CreateRoomActivity.class);
+                view.getContext().startActivity(intent);
+                break;
+            case R.id.join_game:
+                intent = new Intent(view.getContext(), JoinRoom.class);
                 view.getContext().startActivity(intent);
                 break;
             default:

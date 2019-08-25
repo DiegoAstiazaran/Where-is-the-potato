@@ -7,7 +7,7 @@
     tools:context=".CreateRoomActivity">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/join_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
