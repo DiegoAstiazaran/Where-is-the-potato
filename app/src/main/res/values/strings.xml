@@ -5,4 +5,9 @@
     <string name="welcome_message">Welcome %s!</string>
     <string name="authentication_failure_google">Authentication_failure_google</string>
     <string name="authentication_failure_firebase">Authentication_failure_firebase</string>
+
+
+    <string name="free_for_all">Free For All</string>
+    <string name="rooms">Game Rooms</string>
+
 </resources>
