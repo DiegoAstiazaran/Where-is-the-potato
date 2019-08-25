@@ -1,5 +1,6 @@
 package com.example.whereisthepotato;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,9 @@ public class OneGameActivity extends AppCompatActivity {
         setContentView(R.layout.app_bar_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = new Intent(this, LocationService.class);
+        startService(intent);
 
         OneGamePagerFragment fragment = new OneGamePagerFragment();
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

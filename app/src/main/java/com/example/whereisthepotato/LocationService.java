@@ -120,8 +120,6 @@ public class LocationService extends Service {
                 Log.e(TAG, "onLocationChanged: " + location);
                 mLastLocation.set(location);
 
-                Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
-
                 final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 final FirebaseUser fbuser = firebaseAuth.getCurrentUser();
                 final String fbid = fbuser.getUid();
@@ -135,7 +133,6 @@ public class LocationService extends Service {
                                 if (task.isSuccessful()) {
                                     DocumentReference userUpdate = firestoreDB.collection("users").document(fbid);
                                     userUpdate.update("location", new GeoPoint(location.getLatitude(), location.getLongitude()));
-                                    Toast.makeText(getApplicationContext(), userUpdate.getId(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
