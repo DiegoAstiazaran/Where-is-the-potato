@@ -23,6 +23,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Document;
+
+import java.lang.ref.Reference;
+import java.util.ArrayList;
+
 import static android.content.ContentValues.TAG;
 
 public class OneGamePagerFragment extends Fragment {
@@ -31,6 +36,7 @@ public class OneGamePagerFragment extends Fragment {
 
     private ViewPager mViewPager;
     private FirebaseFirestore firestoreDB;
+    private ArrayList<String> game_ids = new ArrayList<String>();
 
     Button allGamesButton;
 
@@ -40,30 +46,6 @@ public class OneGamePagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_games_pager, container, false);
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-
-        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        // TODO: intialize position with another value if getting from 'all games' list
-        mViewPager.setCurrentItem(0);
-
-        allGamesButton = (Button) view.findViewById(R.id.all_games);
-
-        allGamesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), GameActivity.class);
-                startActivity(intent);
-            }
-        });
 
         firestoreDB = FirebaseFirestore.getInstance();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -77,8 +59,11 @@ public class OneGamePagerFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    game_ids = (ArrayList)document.getData().get("rooms");
+                    mSectionsPagerAdapter.notifyDataSetChanged();
+
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.get("games"));
+                        Log.d(TAG, "DocumentSnapshot data: " + game_ids);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -87,6 +72,35 @@ public class OneGamePagerFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_games_pager, container, false);
+
+
+
+        allGamesButton = (Button) view.findViewById(R.id.all_games);
+
+        allGamesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), GameActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
+        // TODO: intialize position with another value if getting from 'all games' list
+        mViewPager.setCurrentItem(0);
 
         return view;
     }
@@ -106,9 +120,8 @@ public class OneGamePagerFragment extends Fragment {
 
         @Override
         public int getCount() {
-            // TODO: Get this number from firebase!!!
-            int user_games_count = 5;
-            return user_games_count;
+            
+            return game_ids.size();
         }
     }
 
