@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.whereisthepotato.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,12 +27,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private ActivityLoginBinding binding;
+
     private GoogleSignInOptions gso;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
-    private SignInButton signInButton;
     private FirebaseFirestore firestoreDB;
     private User user;
 
@@ -46,9 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setButtons() {
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.information).setOnClickListener(this);
-        findViewById(R.id.log_in).setOnClickListener(this);
+        binding.signInButton.setOnClickListener(this);
+        binding.information.setOnClickListener(this);
     }
 
     public void signIn() {
@@ -137,12 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 signIn();
                 break;
             case R.id.information:
-                Intent intent2 = new Intent(this, InformationActivity.class);
-                startActivity(intent2);
-                break;
-            case R.id.log_in:
-                Intent intent = new Intent(this, CreateRoomActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, InformationActivity.class));
                 break;
         }
     }
@@ -157,7 +154,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         configureGoogleSignIn();
         setButtons();
         firestoreDB = FirebaseFirestore.getInstance();
