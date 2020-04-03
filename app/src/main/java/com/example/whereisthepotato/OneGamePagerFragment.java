@@ -12,13 +12,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.whereisthepotato.databinding.FragmentGamesPagerBinding;
+
 public class OneGamePagerFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
 
-    Button allGamesButton;
+    private FragmentGamesPagerBinding binding;
 
     public OneGamePagerFragment() {
     }
@@ -26,24 +28,21 @@ public class OneGamePagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = FragmentGamesPagerBinding.inflate(getLayoutInflater());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_games_pager, container, false);
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
-        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mViewPager = binding.viewPager;
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         // TODO: intialize position with another value if getting from 'all games' list
         mViewPager.setCurrentItem(0);
 
-        allGamesButton = (Button) view.findViewById(R.id.all_games);
-
-        allGamesButton.setOnClickListener(new View.OnClickListener() {
+        binding.allGames.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), GameActivity.class);
@@ -51,7 +50,7 @@ public class OneGamePagerFragment extends Fragment {
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -70,7 +69,7 @@ public class OneGamePagerFragment extends Fragment {
         @Override
         public int getCount() {
             // TODO: Get this number from firebase!!!
-            int user_games_count = 5;
+            int user_games_count = 3;
             return user_games_count;
         }
     }

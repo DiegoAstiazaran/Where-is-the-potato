@@ -7,7 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.whereisthepotato.databinding.GameDetailBinding;
+
 public class OneGameFragment extends Fragment {
+
+    private GameDetailBinding binding;
 
     private int tabPosition;
 
@@ -28,6 +32,8 @@ public class OneGameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        binding = GameDetailBinding.inflate(getLayoutInflater());
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             tabPosition = bundle.getInt(TAB_POSITION);
@@ -36,11 +42,8 @@ public class OneGameFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_detail, container, false);
-
         // TODO: load details into view; get them from firebase
-
-        return rootView;
+        return binding.getRoot();
     }
 
 }

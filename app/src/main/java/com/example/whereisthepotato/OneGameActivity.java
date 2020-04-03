@@ -7,17 +7,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.whereisthepotato.databinding.AppBarMainBinding;
+
 public class OneGameActivity extends AppCompatActivity {
+
+    private AppBarMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_bar_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        Intent intent = new Intent(this, LocationService.class);
-        startService(intent);
+        binding = AppBarMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+
+        startService(new Intent(this, LocationService.class));
 
         OneGamePagerFragment fragment = new OneGamePagerFragment();
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
